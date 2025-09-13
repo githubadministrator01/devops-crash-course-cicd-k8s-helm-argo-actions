@@ -1,0 +1,50 @@
+name: Deploy Node.js app via Helm + Argo CD
+
+on:
+  workflow_call:
+    inputs:
+      image_tag:
+        description: "Docker image tag to deploy"
+        required: true
+        type: string
+      chart_dir:
+        description: "Path to the Helm chart in the repo"
+        required: true
+        type: string
+    secrets:
+      package_token:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PACKAGE_TOKEN }}
+
+      - name: Helm lint
+        run: |
+          CHART_DIR=${{ inputs.chart_dir }}
+          helm template my-node-app $CHART_DIR -f $CHART_DIR/values.yaml
+        continue-on-error: true
+
+      - name: Update Helm chart values with new image tag
+        run: |
+          # Path to your Helm chart inside this repo
+          CHART_DIR=${{ inputs.chart_dir }}
+
+          # Docker image tag from workflow input
+          IMAGE_TAG=${{ inputs.image_tag }}
+
+          # Update values.yaml
+          echo "Updating image tag to ${IMAGE_TAG} in ${CHART_DIR}/values.yaml"
+          sed -i "s|tag:.*|tag: ${IMAGE_TAG}|" $CHART_DIR/values.yaml
+
+          # Commit and push changes
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add $CHART_DIR/values.yaml
+          git commit -m "Deploy image tag ${IMAGE_TAG} [skip ci]"
+          git push

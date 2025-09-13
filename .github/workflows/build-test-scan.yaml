@@ -1,0 +1,59 @@
+name: Build, test and scan docker images
+on:
+  workflow_call:
+    secrets:
+      package_token:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Setup Node.js and install dependencies
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./app
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./app
+
+      # Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.PACKAGE_TOKEN }}
+
+      # Build and push Docker image
+      - name: Build and push the Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./app                # Path to your app folder
+          file: ./app/Dockerfile         # Path to your Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/my-node-app:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/my-node-app:latest
+
+      # Trivy scan
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: ghcr.io/${{ github.repository_owner }}/my-node-app:${{ github.sha }}
+          format: table
+          exit-code: 1   # non-zero exit code fails the job if vulnerabilities are found
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+        continue-on-error: true  
