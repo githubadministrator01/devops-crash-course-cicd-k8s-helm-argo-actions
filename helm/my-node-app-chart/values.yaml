@@ -5,7 +5,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 image:
-  repository: yourusername/my-node-app   # change this to your registry/repo
+  repository: dockeradmin01/my-node-app   # change this to your registry/repo
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -40,12 +40,18 @@ readinessProbe:
   successThreshold: 1
 
 ingress:
-  enabled: false
+  enabled: true
   className: "nginx"
-  annotations: {}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
   hosts:
-    - host: my-node-app.local
+    - host: my-node-app.example.com
       paths:
         - path: /
           pathType: Prefix
-  tls: []
+  tls:
+    - secretName: my-node-app-tls
+      hosts:
+        - my-node-app.example.com
