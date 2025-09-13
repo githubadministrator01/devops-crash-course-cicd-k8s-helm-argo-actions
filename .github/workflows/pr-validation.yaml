@@ -1,0 +1,36 @@
+name: PR Validation - Node.js Build & Test
+
+on:
+  pull_request:
+    branches:
+      - main  # run for PRs targeting main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout PR code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Setup Node.js and install dependencies
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./app
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./app
+
+      # Build the app
+      - name: Build app
+        run: npm run build
+        working-directory: ./app

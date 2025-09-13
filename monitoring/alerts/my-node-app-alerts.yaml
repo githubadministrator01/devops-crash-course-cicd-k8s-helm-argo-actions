@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-nodejs-alert
+  namespace: monitoring
+  labels:
+    grafana_alert: "1"
+data:
+  my-app-nodejs-alerts.yml: |-
+    apiVersion: 1
+    groups:
+        - orgId: 1
+          name: my-node-app
+          folder: my-app
+          interval: 30s
+          rules:
+            - uid: bez54wx4vq96oc
+              title: Memory Usage
+              condition: C
+              data:
+                - refId: A
+                  relativeTimeRange:
+                    from: 3600
+                    to: 0
+                  datasourceUid: prometheus
+                  model:
+                    adhocFilters: []
+                    datasource:
+                        type: prometheus
+                        uid: prometheus
+                    editorMode: code
+                    expr: avg(container_memory_usage_bytes{pod=~"my-app-nodejs-.*", namespace="apps"}) by (pod) / 1000 / 1000
+                    instant: true
+                    interval: ""
+                    intervalMs: 30000
+                    legendFormat: __auto
+                    maxDataPoints: 43200
+                    range: false
+                    refId: A
+                - refId: C
+                  datasourceUid: __expr__
+                  model:
+                    conditions:
+                        - evaluator:
+                            params:
+                                - 30
+                            type: gt
+                          operator:
+                            type: and
+                          query:
+                            params:
+                                - C
+                          reducer:
+                            params: []
+                            type: last
+                          type: query
+                    datasource:
+                        type: __expr__
+                        uid: __expr__
+                    expression: A
+                    intervalMs: 1000
+                    maxDataPoints: 43200
+                    refId: C
+                    type: threshold
+              dashboardUid: c6e065e8-90c3-4d6a-b014-fb6a2355e0a1
+              panelId: 3
+              noDataState: NoData
+              execErrState: Error
+              for: 1m
+              annotations:
+                __dashboardUid__: c6e065e8-90c3-4d6a-b014-fb6a2355e0a1
+                __panelId__: "3"
+                description: 'Pod {{ $labels.pod }} is using {{ $value }} MB of memory (threshold: 70 MB)'
+                summary: High memory usage on {{ $labels.pod }}
+              labels:
+                app: my-node-app
+              isPaused: false

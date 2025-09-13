@@ -1,0 +1,22 @@
+name: CD Parent Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Docker image tag to deploy"
+        required: true
+        default: "latest"
+      chart_dir:
+        description: "Path to the Helm chart in the repo"
+        required: true
+        default: "./helm/my-node-app-chart"
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/deploy-helm-argocd.yaml
+    with:
+      image_tag: ${{ inputs.image_tag }}
+      chart_dir: ${{ inputs.chart_dir }}  # path to Helm chart in the repo
+    secrets:
+      package_token: ${{ secrets.PACKAGE_TOKEN }}

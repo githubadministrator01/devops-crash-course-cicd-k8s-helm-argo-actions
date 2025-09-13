@@ -1,0 +1,36 @@
+name: Deploy to Kubernetes
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Docker image tag to deploy"
+        required: true
+        default: "latest"
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, wsl-2, docker]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Configure Kubeconfig
+        uses: azure/k8s-set-context@v4
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      - name: Deploy the Helm chart
+        run: |
+          helm upgrade \
+            my-app \
+            helm/my-node-app-chart \
+            --install \
+            --create-namespace \
+            --namespace apps \
+            --set image.repository=ghcr.io/${{ github.repository_owner }}/my-node-app \
+            --set image.tag=${{ inputs.image_tag }}

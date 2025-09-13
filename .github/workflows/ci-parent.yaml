@@ -1,0 +1,14 @@
+name: CI Parent Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-test-scan:
+    uses: ./.github/workflows/build-test-scan.yaml
+    secrets:
+      package_token: ${{ secrets.PACKAGE_TOKEN }}
+
