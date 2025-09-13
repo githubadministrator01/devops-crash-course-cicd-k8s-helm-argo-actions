@@ -1,0 +1,14 @@
+{
+  "name": "my-node-app",
+  "version": "1.0.0",
+  "description": "Simple Node.js app for Udemy course",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"No tests yet\" && exit 0",
+    "build": "mkdir -p dist && cp server.js dist/ && cp -r node_modules dist/"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
