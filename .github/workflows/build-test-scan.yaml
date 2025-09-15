@@ -42,13 +42,13 @@ jobs:
           context: ./app                # Path to your app folder
           file: ./app/Dockerfile         # Path to your Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          tags: ghcr.io/githubadministrator01/my-node-app:${{ github.sha }}
 
       # Trivy scan
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          image-ref: ghcr.io/githubadministrator01/my-node-app:${{ github.sha }}
           format: table
           exit-code: 0
           vuln-type: 'os,library'
