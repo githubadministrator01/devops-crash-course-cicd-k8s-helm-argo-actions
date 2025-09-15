@@ -26,9 +26,10 @@ jobs:
           helm upgrade \
             ${{ github.event.repository.name }} \
             helm \
-            upgrade -i \
+            --install \
             --create-namespace \
             --namespace ${{ github.event.repository.name }} \
             --set image.repository=ghcr.io/${{ github.repository }} \
             --set image.tag=${{ github.sha }}
+
 
