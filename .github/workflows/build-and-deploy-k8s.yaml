@@ -18,12 +18,15 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: app/package-lock.json
 
       - name: Install dependencies
         run: npm ci
+        working-directory: ./app
 
       - name: Run tests
         run: npm test
+        working-directory: ./app
 
       # Login to GitHub Container Registry
       - name: Login to GitHub Container Registry
@@ -76,3 +79,4 @@ jobs:
             --namespace ${{ github.event.repository.name }} \
             --set image.repository=ghcr.io/${{ github.repository }} \
             --set image.tag=${{ github.sha }}
+
