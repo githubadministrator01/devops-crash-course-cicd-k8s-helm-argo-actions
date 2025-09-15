@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,8 +26,9 @@ jobs:
           helm upgrade \
             ${{ github.event.repository.name }} \
             helm \
-            --install \
+            upgrade -i \
             --create-namespace \
             --namespace ${{ github.event.repository.name }} \
             --set image.repository=ghcr.io/${{ github.repository }} \
             --set image.tag=${{ github.sha }}
+
