@@ -40,6 +40,8 @@ jobs:
       - name: Build and push the Docker image
         uses: docker/build-push-action@v3
         with:
+          context: ./app                # Path to your app folder
+          file: ./app/Dockerfile         # Path to your Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
