@@ -16,6 +16,8 @@ spec:
         app.kubernetes.io/name: {{ include "my-node-app.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      imagePullSecrets:
+        - name: {{ .Values.dockerConfigJson.secretName }}
       containers:
         - name: {{ include "my-node-app.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

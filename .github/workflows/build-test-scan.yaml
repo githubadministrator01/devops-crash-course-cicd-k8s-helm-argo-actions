@@ -33,7 +33,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.PACKAGE_TOKEN }}
 
       # Build and push Docker image
       - name: Build and push the Docker image
@@ -42,13 +42,13 @@ jobs:
           context: ./app                # Path to your app folder
           file: ./app/Dockerfile         # Path to your Dockerfile
           push: true
-          tags: ghcr.io/githubadministrator01/my-node-app:${{ github.sha }}
+          tags: ghcr.io/my-node-app:${{ github.sha }}
 
       # Trivy scan
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: ghcr.io/githubadministrator01/my-node-app:${{ github.sha }}
+          image-ref: ghcr.io/my-node-app:${{ github.sha }}
           format: table
           exit-code: 0
           vuln-type: 'os,library'
