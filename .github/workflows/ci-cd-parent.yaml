@@ -14,15 +14,13 @@ on:
         required: true
         default: "./helm/my-node-app-chart"
 
-permissions:        # important for GHCR push
-  contents: read
-  packages: write
-
 jobs:
   build-test-scan:
     uses: ./.github/workflows/build-test-scan.yaml
     with:
       image_tag: "ghcr.io/${{ github.repository_owner }}/my-node-app:latest"
+    secrets:
+      PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
 
   deploy:
     needs: build-test-scan
