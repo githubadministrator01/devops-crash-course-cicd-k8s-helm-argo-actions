@@ -56,6 +56,7 @@ jobs:
         with:
           image-ref: ghcr.io/${{ github.repository_owner }}/my-node-app:${{ github.sha }}
           format: table
-          exit-code: 0   # non-zero exit code fails the job if vulnerabilities are found
+          exit-code: 1   # non-zero exit code fails the job if vulnerabilities are found
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+        continue-on-error: true  
