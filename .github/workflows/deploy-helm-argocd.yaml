@@ -25,7 +25,7 @@ jobs:
         with:
           # path to the Helm chart templates
           directory: ./helm/my-node-app-chart/templates
-          format: text 
+          format: plain 
 
       - name: Update Helm chart values with new image tag
         run: |
