@@ -22,12 +22,11 @@ jobs:
       - name: Deploy the Helm chart
         run: |
           helm upgrade \
-            ${{ github.event.repository.name }} \
-            helm \
+            my-node-app \
+            helm/my-node-app-chart \
             --install \
             --create-namespace \
-            --namespace ${{ github.event.repository.name }} \
-            --set image.repository=ghcr.io/${{ github.repository }} \
+            --namespace apps \
+            --set image.repository=ghcr.io/${{ github.repository_owner }}/my-node-app \
             --set image.tag=${{ github.sha }}
-
-
+            --set dockerConfigJson.data="\{\"auths\":\{\"ghcr.io\":\{\"username\":\"${{ github.actor }}\"\,\"password\":\"${{ secrets.REGISTRY_TOKEN }}\"\}\}\}"

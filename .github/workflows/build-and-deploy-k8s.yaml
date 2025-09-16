@@ -75,7 +75,7 @@ jobs:
         run: |
           helm upgrade \
             my-node-app \
-            helm \
+            helm/my-node-app-chart \
             --install \
             --create-namespace \
             --namespace apps \
