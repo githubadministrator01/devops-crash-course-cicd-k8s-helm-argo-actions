@@ -29,7 +29,7 @@ jobs:
 
       - name: Helm lint
         run: |
-          helm template $CHART_DIR | kube-linter lint -
+          helm template my-node-app $CHART_DIR | kube-linter lint -
 
       - name: Update Helm chart values with new image tag
         run: |
