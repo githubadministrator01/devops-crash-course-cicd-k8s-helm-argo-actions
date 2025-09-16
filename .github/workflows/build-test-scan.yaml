@@ -59,4 +59,4 @@ jobs:
           exit-code: 1   # non-zero exit code fails the job if vulnerabilities are found
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-        continue-on-error: true  
+        # continue-on-error: true  
