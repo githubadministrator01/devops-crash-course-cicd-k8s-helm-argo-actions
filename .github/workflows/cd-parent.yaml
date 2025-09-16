@@ -1,4 +1,4 @@
-name: CI/CD Parent Workflow
+name: CD Parent Workflow
 
 on:
   push:
@@ -15,16 +15,11 @@ on:
         default: "./helm/my-node-app-chart"
 
 jobs:
-  build-test-scan:
-    uses: ./.github/workflows/build-test-scan.yaml
-    secrets:
-      package_token: ${{ secrets.PACKAGE_TOKEN }}
-
   deploy:
     needs: build-test-scan
     uses: ./.github/workflows/deploy-helm-argocd.yaml
     with:
-      image_tag: "ghcr.io/${{ github.repository_owner }}/my-node-app:latest"
+      image_tag: ${{ secrets.image_tag }} 
       chart_dir: "./helm/my-node-app-chart"  # path to Helm chart in the repo
     secrets:
       package_token: ${{ secrets.PACKAGE_TOKEN }}  
