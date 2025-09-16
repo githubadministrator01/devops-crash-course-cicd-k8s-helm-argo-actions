@@ -9,6 +9,9 @@ on:
       image_tag:
         description: "Docker image tag to deploy"
         required: true
+      chart_dir:
+        description: "Path to the Helm chart in the repo"
+        required: true
 
 jobs:
   build-test-scan:
