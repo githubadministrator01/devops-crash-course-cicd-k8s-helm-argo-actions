@@ -9,6 +9,7 @@ on:
       image_tag:
         description: "Docker image tag to deploy"
         required: true
+        default: "ghcr.io/${{ github.repository_owner }}/my-node-app:latest"
       chart_dir:
         description: "Path to the Helm chart in the repo"
         required: true
@@ -18,7 +19,7 @@ jobs:
   deploy:
     uses: ./.github/workflows/deploy-helm-argocd.yaml
     with:
-      image_tag: ${{ inputs.image_tag }}
+      image_tag: "ghcr.io/${{ github.repository_owner }}/my-node-app:latest"
       chart_dir: "./helm/my-node-app-chart"  # path to Helm chart in the repo
     secrets:
       package_token: ${{ secrets.PACKAGE_TOKEN }}  
