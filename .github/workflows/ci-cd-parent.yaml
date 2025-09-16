@@ -12,13 +12,13 @@ on:
 
 jobs:
   build-test-scan:
-    uses: ./.github/workflows/templates/build-test-scan.yaml
+    uses: ./.github/workflows/build-test-scan.yaml
     with:
       image_tag: ${{ inputs.image_tag }}
 
   deploy:
     needs: build-test-scan
-    uses: ./.github/workflows/templates/deploy-helm-argocd.yaml
+    uses: ./.github/workflows/deploy-helm-argocd.yaml
     with:
       image_tag: ${{ inputs.image_tag }}
       chart_path: "./helm/my-node-app-chart"  # path to Helm chart in the repo
