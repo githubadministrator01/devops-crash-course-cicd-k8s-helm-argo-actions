@@ -1,8 +1,6 @@
 name: Build, test and scan docker images
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -55,6 +53,6 @@ jobs:
         with:
           image-ref: ghcr.io/${{ github.repository_owner }}/my-node-app:${{ github.sha }}
           format: table
-          exit-code: 0
+          exit-code: 0   # non-zero exit code fails the job if vulnerabilities are found
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
