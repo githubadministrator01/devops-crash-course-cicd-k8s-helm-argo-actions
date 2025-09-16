@@ -7,6 +7,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:               # important for GHCR push
+      contents: read
+      packages: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -42,13 +45,15 @@ jobs:
           context: ./app                # Path to your app folder
           file: ./app/Dockerfile         # Path to your Dockerfile
           push: true
-          tags: ghcr.io/my-node-app:${{ github.sha }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/my-node-app:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/my-node-app:latest
 
       # Trivy scan
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: ghcr.io/my-node-app:${{ github.sha }}
+          image-ref: ghcr.io/${{ github.repository_owner }}/my-node-app:${{ github.sha }}
           format: table
           exit-code: 0
           vuln-type: 'os,library'
