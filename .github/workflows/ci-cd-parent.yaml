@@ -12,6 +12,7 @@ on:
       chart_dir:
         description: "Path to the Helm chart in the repo"
         required: true
+        default: "./helm/my-node-app-chart"
 
 jobs:
   build-test-scan:
