@@ -3,7 +3,7 @@ on:
   workflow_call:
     secrets:
       package_token:
-        required: true    
+        required: true
 
 jobs:
   build:
