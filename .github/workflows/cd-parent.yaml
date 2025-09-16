@@ -19,6 +19,6 @@ jobs:
     uses: ./.github/workflows/deploy-helm-argocd.yaml
     with:
       image_tag: ${{ inputs.image_tag }}
-      chart_dir: ${{ inputs.chart_dir }}  # path to Helm chart in the repo
+      chart_dir: "./helm/my-node-app-chart"  # path to Helm chart in the repo
     secrets:
       package_token: ${{ secrets.PACKAGE_TOKEN }}  
