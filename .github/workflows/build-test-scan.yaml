@@ -5,6 +5,9 @@ on:
       image_tag:
         required: true
         type: string
+    secrets:
+      package_token:
+        required: true    
 
 jobs:
   build:

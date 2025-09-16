@@ -20,7 +20,7 @@ jobs:
     with:
       image_tag: "ghcr.io/${{ github.repository_owner }}/my-node-app:latest"
     secrets:
-      PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
+      package_token: ${{ secrets.PACKAGE_TOKEN }}
 
   deploy:
     needs: build-test-scan
