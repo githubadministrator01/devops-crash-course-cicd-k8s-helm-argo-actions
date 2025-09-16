@@ -6,7 +6,7 @@ fullnameOverride: ""
 
 image:
   repository: dockeradmin01/my-node-app   # change this to your registry/repo
-  tag: 
+  tag: ghcr.io/githubadministrator01/my-node-app:latest
   pullPolicy: IfNotPresent
 
 service:
