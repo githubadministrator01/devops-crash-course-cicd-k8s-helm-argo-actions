@@ -21,6 +21,7 @@ jobs:
 
       - name: Helm lint
         run: |
+          CHART_DIR=${{ inputs.chart_dir }}
           helm template my-node-app $CHART_DIR -f $CHART_DIR/values.yaml
 
       - name: Update Helm chart values with new image tag
