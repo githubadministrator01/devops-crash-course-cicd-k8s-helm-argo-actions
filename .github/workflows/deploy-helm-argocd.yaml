@@ -7,6 +7,10 @@ on:
         description: "Docker image tag to deploy"
         required: true
         type: string
+      chart_dir:
+        description: "Path to the Helm chart in the repo"
+        required: true
+        type: string
 
 jobs:
   deploy:
@@ -27,7 +31,7 @@ jobs:
       - name: Update Helm chart values with new image tag
         run: |
           # Path to your Helm chart inside this repo
-          CHART_DIR="./helm/my-node-app-chart"
+          CHART_DIR=${{ inputs.chart_dir }}
 
           # Docker image tag from workflow input
           IMAGE_TAG=${{ inputs.image_tag }}
