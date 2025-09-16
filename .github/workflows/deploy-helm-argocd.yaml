@@ -46,5 +46,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add $CHART_DIR/values.yaml
-          git commit -m "Deploy image tag ${IMAGE_TAG}"
+          git commit -m "Deploy image tag ${IMAGE_TAG} [skip ci]"
           git push
