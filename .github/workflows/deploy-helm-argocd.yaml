@@ -19,13 +19,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Lint Kubernetes manifests using kube-linter action
-      - name: Run kube-linter
-        uses: stackrox/kube-linter-action@v1.0.4
-        with:
-          # path to the Helm chart templates
-          directory: ./helm/my-node-app-chart/templates
-          format: plain 
+      # # Lint Kubernetes manifests using kube-linter action
+      # - name: Run kube-linter
+      #   uses: stackrox/kube-linter-action@v1.0.4
+      #   with:
+      #     # path to the Helm chart templates
+      #     directory: ./helm/my-node-app-chart/templates
+      #     format: plain 
+
+      - name: Helm lint
+        run: |
+          helm template $CHART_DIR | kube-linter lint -
 
       - name: Update Helm chart values with new image tag
         run: |
@@ -37,7 +41,7 @@ jobs:
 
           # Update values.yaml
           echo "Updating image tag to ${IMAGE_TAG} in ${CHART_DIR}/values.yaml"
-          sed -i "s/tag:.*/tag: ${IMAGE_TAG}/" $CHART_DIR/values.yaml
+          sed -i "s|tag:.*|tag: ${IMAGE_TAG}|" $CHART_DIR/values.yaml
 
           # Commit and push changes
           git config user.name "github-actions"
