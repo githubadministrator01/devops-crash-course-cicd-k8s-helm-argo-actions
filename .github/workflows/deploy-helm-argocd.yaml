@@ -24,9 +24,8 @@ jobs:
         uses: stackrox/kube-linter-action@v1.0.4
         with:
           # path to the Helm chart templates
-          paths: ./helm/my-node-app-chart/templates
-          # optional: fail the workflow if any issues found
-          fail-on-error: true  
+          directory: ./helm/my-node-app-chart/templates
+          format: text 
 
       - name: Update Helm chart values with new image tag
         run: |
