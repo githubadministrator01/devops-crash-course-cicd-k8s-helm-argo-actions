@@ -19,13 +19,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # # Lint Kubernetes manifests using kube-linter action
-      # - name: Run kube-linter
-      #   uses: stackrox/kube-linter-action@v1.0.4
-      #   with:
-      #     # path to the Helm chart templates
-      #     directory: ./helm/my-node-app-chart/templates
-      #     format: plain 
+      # Lint Kubernetes manifests using kube-linter action
+      - name: Run kube-linter
+        uses: stackrox/kube-linter-action@v1.0.4
+        with:
+          # path to the Helm chart templates
+          directory: ./helm/my-node-app-chart/templates
+          format: plain 
 
       - name: Helm lint
         run: |
