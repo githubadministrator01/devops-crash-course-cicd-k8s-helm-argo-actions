@@ -4,5 +4,5 @@ type: kubernetes.io/dockerconfigjson
 metadata:
   name: {{ .Values.dockerConfigJson.secretName }}
   namespace: {{ .Release.Namespace }}
-data:
-  .dockerconfigjson: {{ .Values.dockerConfigJson.data | b64enc }}
+stringData:
+  .dockerconfigjson: {{ .Values.dockerConfigJson.data }}
