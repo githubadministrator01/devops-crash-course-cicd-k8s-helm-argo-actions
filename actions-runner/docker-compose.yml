@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  github-runner:
+    image: myoung34/github-runner:latest
+    container_name: github-runner
+    restart: unless-stopped
+    environment:
+      REPO_URL: "https://github.com/githubadministrator01/devops-crash-course-cicd-k8s-helm-argo-actions" # Or https://github.com/<ORG> if org runner
+      RUNNER_NAME: "wsl-2-runner"
+      RUNNER_TOKEN: $RUNNER_TOKEN   # see .env file
+      RUNNER_WORKDIR: "_work"
+      LABELS: "self-hosted,wsl-2,docker"
+      ORG_RUNNER: "false" # set to true if you want org-level runner
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./work:/_work  # persist job data
