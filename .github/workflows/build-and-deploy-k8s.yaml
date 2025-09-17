@@ -2,6 +2,11 @@ name: Build and Deploy Node.js app to Kubernetes
 
 on:
   workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Docker image tag to deploy"
+        required: true
+        default: "latest"
 
 jobs:
   build:
@@ -80,4 +85,4 @@ jobs:
             --create-namespace \
             --namespace apps \
             --set image.repository=ghcr.io/${{ github.repository_owner }}/my-node-app \
-            --set image.tag=${{ github.sha }}
+            --set image.tag=${{ inputs.image_tag }}
