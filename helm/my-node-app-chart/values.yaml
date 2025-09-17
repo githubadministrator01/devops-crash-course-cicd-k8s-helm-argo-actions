@@ -55,6 +55,3 @@ ingress:
     - secretName: my-node-app-tls
       hosts:
         - my-node-app.example.com
-
-dockerConfigJson:
-  secretName: dockerconfigjson

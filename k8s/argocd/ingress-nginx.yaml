@@ -13,7 +13,7 @@ spec:
         releaseName: ingress-nginx
         valueFiles:
           - $values/helm/ingress-nginx/values.yaml
-    - repoURL: 'https://git.example.com/org/value-files.git'  # replace with your repo 
+    - repoURL: 'https://github.com/githubadministrator01/devops-crash-course-cicd-k8s-helm-argo-actions.git'  # replace with your repo 
       targetRevision: main
       ref: values    
   destination:

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: my-node-app
+  name: ghcr-secret
   namespace: argocd
 spec:
   project: applications
@@ -10,17 +10,7 @@ spec:
   source:
     repoURL: https://github.com/githubadministrator01/devops-crash-course-cicd-k8s-helm-argo-actions.git  # replace with your repo
     targetRevision: main
-    path: helm/my-node-app-chart
-    helm:
-      releaseName: my-node-app
-      valueFiles:
-        - values.yaml
-      # optional: override values
-      parameters:
-        - name: image.repository
-          value: ghcr.io/your-org/your-node-app
-        - name: image.tag
-          value: "1.0.0"
+    path: k8s/manifests  # path to your Kubernetes manifests or Helm chart
 
   # Destination cluster and namespace
   destination:
