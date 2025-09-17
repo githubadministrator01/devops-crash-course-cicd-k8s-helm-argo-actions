@@ -56,5 +56,5 @@ ingress:
       hosts:
         - my-node-app.example.com
 
-registry-creds:
+registryCreds:
   secretName: ghcr-secret
