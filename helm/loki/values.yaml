@@ -402,6 +402,7 @@ loki:
     http_server_write_timeout: 600s
   # -- Limits config
   limits_config:
+    allow_structured_metadata: true
     reject_old_samples: true
     reject_old_samples_max_age: 168h
     max_cache_freshness_per_query: 10m
@@ -413,7 +414,7 @@ loki:
   # -- Check https://grafana.com/docs/loki/latest/configuration/#common_config for more info on how to provide a common configuration
   commonConfig:
     path_prefix: /var/loki
-    replication_factor: 3
+    replication_factor: 1
     # -- The gRPC address of the compactor. The use of compactor_grpc_address is prefered over compactor_address.
     # If a customized compactor_address is set, compactor_grpc_address should be set to an empty string.
     compactor_grpc_address: '{{ include "loki.compactorAddress" . }}'
@@ -519,7 +520,15 @@ loki:
         account_key: null
 
   # -- Check https://grafana.com/docs/loki/latest/configuration/#schema_config for more info on how to configure schemas
-  schemaConfig: {}
+  schemaConfig:
+    configs:
+      - from: "2024-04-01"
+        store: tsdb
+        object_store: s3
+        schema: v13
+        index:
+          prefix: loki_index_
+          period: 24h
   # -- a real Loki install requires a proper schemaConfig defined above this, however for testing or playing around
   # you can enable useTestSchema
   useTestSchema: false
@@ -569,7 +578,7 @@ loki:
   compactor_grpc_client: {}
   # --  Optional pattern ingester configuration
   pattern_ingester:
-    enabled: false
+    enabled: true
   # --  Optional analytics configuration
   analytics: {}
   # --  Optional Loki UI: Provides access to a operators UI for Loki distributed. When enabled UI will be available at /ui/ of loki-gateway
@@ -1421,7 +1430,7 @@ migrate:
 # Configuration for the single binary node(s)
 singleBinary:
   # -- Number of replicas for the single binary
-  replicas: 0
+  replicas: 1
   autoscaling:
     # -- Enable autoscaling
     enabled: false
@@ -1501,7 +1510,7 @@ singleBinary:
     # -- Enable StatefulSetAutoDeletePVC feature
     enableStatefulSetAutoDeletePVC: true
     # -- Enable persistent disk
-    enabled: true
+    enabled: false
     # -- Set access modes on the PersistentVolumeClaim
     accessModes:
       - ReadWriteOnce
@@ -1512,7 +1521,7 @@ singleBinary:
     # If set to "-", storageClassName: "", which disables dynamic provisioning.
     # If empty or set to null, no storageClassName spec is
     # set, choosing the default provisioner (gp2 on AWS, standard on GKE, AWS, and OpenStack).
-    storageClass: null
+    storageClass: hostpath
     # -- Selector for persistent disk
     selector: null
     # -- Annotations for volume claim
@@ -3899,7 +3908,7 @@ rollout_operator:
     allowPrivilegeEscalation: false
 # -- Configuration for the minio subchart
 minio:
-  enabled: false
+  enabled: true
   replicas: 1
   # Minio requires 2 to 16 drives for erasure code (drivesPerNode * replicas)
   # https://docs.min.io/docs/minio-erasure-code-quickstart-guide
