@@ -6,7 +6,7 @@ on:
       image_tag:
         description: "Docker image tag to deploy"
         required: true
-        default: "ghcr.io/githubadministrator01/my-node-app:latest"
+        default: "latest"
       chart_dir:
         description: "Path to the Helm chart in the repo"
         required: true
