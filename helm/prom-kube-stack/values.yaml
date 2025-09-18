@@ -385,7 +385,7 @@ alertmanager:
 
   ## Deploy alertmanager
   ##
-  enabled: true
+  enabled: false
 
   # Optional: Override the namespace where Alertmanager will be deployed.
   namespaceOverride: ""
@@ -1308,12 +1308,12 @@ grafana:
   ingress:
     ## If true, Grafana Ingress will be created
     ##
-    enabled: false
+    enabled: true
 
     ## IngressClassName for Grafana Ingress.
     ## Should be provided if Ingress is enable.
     ##
-    # ingressClassName: nginx
+    ingressClassName: nginx
 
     ## Annotations for Grafana Ingress
     ##
@@ -1330,7 +1330,8 @@ grafana:
     ##
     # hosts:
     #   - grafana.domain.com
-    hosts: []
+    hosts:
+      - grafana.example.com
 
     ## Path for grafana ingress
     path: /
@@ -1338,22 +1339,22 @@ grafana:
     ## TLS configuration for grafana Ingress
     ## Secret must be manually created in the namespace
     ##
-    tls: []
-    # - secretName: grafana-general-tls
-    #   hosts:
-    #   - grafana.example.com
+    tls:
+      - secretName: grafana-general-tls
+        hosts:
+        - grafana.example.com
 
   # # To make Grafana persistent (Using Statefulset)
   # #
-  # persistence:
-  #   enabled: true
-  #   type: sts
-  #   storageClassName: "storageClassName"
-  #   accessModes:
-  #     - ReadWriteOnce
-  #   size: 20Gi
-  #   finalizers:
-  #     - kubernetes.io/pvc-protection
+  persistence:
+    enabled: true
+    type: sts
+    storageClassName: "hostpath"
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    finalizers:
+      - kubernetes.io/pvc-protection
 
   serviceAccount:
     create: true
@@ -2543,6 +2544,8 @@ prometheus-node-exporter:
       ipFamilyPolicy: "PreferDualStack"
     labels:
       jobLabel: node-exporter
+  hostRootFsMount:
+    enabled: false
 
   prometheus:
     monitor:
@@ -3709,9 +3712,9 @@ prometheus:
   #     someoneelse:$apr1$DMZX2Z4q$6SbQIfyuLQd.xmo/P0m2c.
 
   ingress:
-    enabled: false
+    enabled: true
 
-    ingressClassName: ""
+    ingressClassName: "nginx"
 
     annotations: {}
     labels: {}
@@ -3724,7 +3727,8 @@ prometheus:
     ##
     # hosts:
     #   - prometheus.domain.com
-    hosts: []
+    hosts:
+      - prometheus.example.com
 
     ## Paths to use for ingress rules - one path should match the prometheusSpec.routePrefix
     ##
@@ -3738,10 +3742,10 @@ prometheus:
     ## TLS configuration for Prometheus Ingress
     ## Secret must be manually created in the namespace
     ##
-    tls: []
-      # - secretName: prometheus-general-tls
-      #   hosts:
-      #     - prometheus.example.com
+    tls:
+      - secretName: prometheus-general-tls
+        hosts:
+          - prometheus.example.com
 
   # -- BETA: Configure the gateway routes for the chart here.
   # More routes can be added by adding a dictionary key like the 'main' route.
@@ -4135,7 +4139,7 @@ prometheus:
     ## prometheus resource to be created with selectors based on values in the helm deployment,
     ## which will also match the servicemonitors created
     ##
-    serviceMonitorSelectorNilUsesHelmValues: true
+    serviceMonitorSelectorNilUsesHelmValues: false
 
     ## ServiceMonitors to be selected for target discovery.
     ## If {}, select all ServiceMonitors
@@ -4158,7 +4162,7 @@ prometheus:
     ## prometheus resource to be created with selectors based on values in the helm deployment,
     ## which will also match the podmonitors created
     ##
-    podMonitorSelectorNilUsesHelmValues: true
+    podMonitorSelectorNilUsesHelmValues: false
 
     ## PodMonitors to be selected for target discovery.
     ## If {}, select all PodMonitors
@@ -4331,17 +4335,17 @@ prometheus:
     ## Prometheus StorageSpec for persistent data
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/platform/storage.md
     ##
-    storageSpec: {}
-    ## Using PersistentVolumeClaim
-    ##
-    #  volumeClaimTemplate:
-    #    spec:
-    #      storageClassName: gluster
-    #      accessModes: ["ReadWriteOnce"]
-    #      resources:
-    #        requests:
-    #          storage: 50Gi
-    #      selector: {}
+    storageSpec:
+    # Using PersistentVolumeClaim
+    #
+     volumeClaimTemplate:
+       spec:
+         storageClassName: hostpath
+         accessModes: ["ReadWriteOnce"]
+         resources:
+           requests:
+             storage: 10Gi
+         selector: {}
 
     ## Using tmpfs volume
     ##
