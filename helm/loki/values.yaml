@@ -475,9 +475,9 @@ loki:
       max_retries: null
       connect_timeout: null
       request_timeout: null
-    filesystem:
-      chunks_directory: /var/loki/chunks
-      rules_directory: /var/loki/rules
+    # filesystem:
+    #   chunks_directory: /var/loki/chunks
+    #   rules_directory: /var/loki/rules
 
     # Loki now supports using thanos storage clients for connecting to object storage backend.
     # This will become the default way to configure storage in a future releases.
