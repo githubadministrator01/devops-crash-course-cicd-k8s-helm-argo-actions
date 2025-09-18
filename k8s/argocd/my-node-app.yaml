@@ -12,15 +12,9 @@ spec:
     targetRevision: main
     path: helm/my-node-app-chart
     helm:
-      releaseName: my-node-app
+      releaseName: my-app
       valueFiles:
         - values.yaml
-      # optional: override values
-      parameters:
-        - name: image.repository
-          value: ghcr.io/your-org/your-node-app
-        - name: image.tag
-          value: "1.0.0"
 
   # Destination cluster and namespace
   destination:
