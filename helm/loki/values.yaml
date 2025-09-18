@@ -564,8 +564,12 @@ loki:
       index_gateway_client:
         server_address: '{{ include "loki.indexGatewayAddress" . }}'
     tsdb_shipper:
+      active_index_directory: /tmp/loki/index
+      cache_location: /tmp/loki/cache
       index_gateway_client:
         server_address: '{{ include "loki.indexGatewayAddress" . }}'
+    tsdb:
+      dir: /tmp/loki/tsdb    
     bloom_shipper:
       working_directory: /var/loki/data/bloomshipper
     hedging:
