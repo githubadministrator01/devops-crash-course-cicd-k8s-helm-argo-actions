@@ -70,7 +70,7 @@ data:
               annotations:
                 __dashboardUid__: c6e065e8-90c3-4d6a-b014-fb6a2355e0a1
                 __panelId__: "3"
-                description: 'Pod {{ $labels.pod }} is using {{ $value }} MB of memory (threshold: 70 MB)'
+                description: 'Pod {{ $labels.pod }} is using {{ $value }} MB of memory (threshold: 30 MB)'
                 summary: High memory usage on {{ $labels.pod }}
               labels:
                 app: my-node-app
