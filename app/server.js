@@ -23,3 +23,5 @@ app.post("/api/data", (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
 });
+
+module.exports = app; // Export the app for testing
