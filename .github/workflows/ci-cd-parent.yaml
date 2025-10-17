@@ -18,6 +18,6 @@ jobs:
     with:
       image_tag: ${{ github.sha }}
       chart_dir: "./helm/my-node-app-chart"  # path to Helm chart in the repo
-      runs_on: '[self-hosted, wsl-2, docker]'
+      runs_on: '["self-hosted", "wsl-2", "docker"]'
     secrets:
       package_token: ${{ secrets.PACKAGE_TOKEN }}
