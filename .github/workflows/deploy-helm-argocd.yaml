@@ -11,13 +11,17 @@ on:
         description: "Path to the Helm chart in the repo"
         required: true
         type: string
+      runs_on:
+        description: "GitHub runner label or JSON array of labels to run the job on (e.g. 'ubuntu-latest' or '[\"self-hosted\",\"linux\"]')"
+        required: false
+        type: string
     secrets:
       package_token:
         required: true
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(inputs.runs_on) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
