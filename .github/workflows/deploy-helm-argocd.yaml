@@ -28,7 +28,6 @@ jobs:
         run: |
           CHART_DIR=${{ inputs.chart_dir }}
           helm template my-node-app $CHART_DIR -f $CHART_DIR/values.yaml
-        continue-on-error: true
 
       - name: Update Helm chart values with new image tag
         run: |
@@ -43,6 +42,7 @@ jobs:
           sed -i "s|tag:.*|tag: ${IMAGE_TAG}|" $CHART_DIR/values.yaml
 
           # Commit and push changes
+          echo "Committing and pushing changes to $CHART_DIR/values.yaml"
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add $CHART_DIR/values.yaml
