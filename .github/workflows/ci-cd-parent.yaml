@@ -13,6 +13,7 @@ jobs:
       package_token: ${{ secrets.PACKAGE_TOKEN }}
 
   deploy:
+    needs: build-test-scan
     uses: ./.github/workflows/deploy-helm-argocd.yaml
     with:
       image_tag: "latest"
