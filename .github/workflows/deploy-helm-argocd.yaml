@@ -33,8 +33,9 @@ jobs:
           if ! command -v helm &> /dev/null; then
             echo "Helm not found, installing..."
             curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+            helm version
           else
-            echo "Helm already installed: $(helm version --short)"
+            echo "Helm already installed: $(helm version)"
           fi
 
       - name: Helm lint
