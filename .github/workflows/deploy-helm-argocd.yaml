@@ -41,13 +41,6 @@ jobs:
           echo "Updating image tag to ${IMAGE_TAG} in ${CHART_DIR}/values.yaml"
           sed -i "s|tag:.*|tag: ${IMAGE_TAG}|" $CHART_DIR/values.yaml
 
-          # Check if there are changes
-          echo "Checking for changes in $CHART_DIR/values.yaml"
-          if git diff --quiet $CHART_DIR/values.yaml; then
-            echo "No changes detected - image tag ${IMAGE_TAG} is already deployed"
-            exit 0
-          fi
-
           # Commit and push changes
           echo "Committing and pushing changes to $CHART_DIR/values.yaml"
           git config user.name "github-actions"
