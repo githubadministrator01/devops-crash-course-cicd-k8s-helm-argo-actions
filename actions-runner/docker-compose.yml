@@ -9,12 +9,12 @@ services:
       REPO_URL: "https://github.com/githubadministrator01/devops-crash-course-cicd-k8s-helm-argo-actions" # Or https://github.com/<ORG> if org runner
       RUNNER_NAME: "wsl-2-runner"
       RUNNER_TOKEN: $RUNNER_TOKEN   # see .env file
-      RUNNER_WORKDIR: "/runner/_work"
+      RUNNER_WORKDIR: "/home/runner/_work"
       LABELS: "self-hosted,wsl-2,docker"
       ORG_RUNNER: "false" # set to true if you want org-level runner
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - runner-data:/runner/_work  # persist job data
+      - runner-data:/home/runner/_work  # persist job data
 
 volumes:
   runner-data:    
