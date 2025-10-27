@@ -15,8 +15,7 @@ jobs:
       - name: Delete old untagged container versions
         uses: actions/delete-package-versions@v5
         with:
-          owner: ${{ github.repository_owner }}
-          package-name: 'my-node-app'  # Your package name
+          package-name: 'ghcr.io/githubadministrator01/my-node-app'  # Your package name
           package-type: 'container'
           min-versions-to-keep: 2  # Keep at least 2 versions
           delete-only-untagged-versions: 'true'  # Only delete untagged
@@ -25,8 +24,7 @@ jobs:
       - name: Delete old versions (including tagged, older than 90 days)
         uses: actions/delete-package-versions@v5
         with:
-          owner: ${{ github.repository_owner }}
-          package-name: 'my-node-app'
+          package-name: 'ghcr.io/githubadministrator01/my-node-app'
           package-type: 'container'
           min-versions-to-keep: 4
           delete-only-pre-release-versions: 'false'
