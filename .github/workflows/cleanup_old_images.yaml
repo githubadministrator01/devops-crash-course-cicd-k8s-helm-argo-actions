@@ -1,0 +1,32 @@
+name: Cleanup Old Docker Images
+
+on:
+  schedule:
+    - cron: '0 2 * * 0'  # Weekly on Sunday at 2 AM
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  packages: write  # Required to delete packages
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old untagged container versions
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'my-node-app'  # Your package name
+          package-type: 'container'
+          min-versions-to-keep: 2  # Keep at least 2 versions
+          delete-only-untagged-versions: 'true'  # Only delete untagged
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Delete old versions (including tagged, older than 90 days)
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'my-node-app'
+          package-type: 'container'
+          min-versions-to-keep: 4
+          delete-only-pre-release-versions: 'false'
+          ignore-versions: '^(latest|v\\d+\\.\\d+\\.\\d+)$'  # Keep these tags
+          token: ${{ secrets.GITHUB_TOKEN }}
