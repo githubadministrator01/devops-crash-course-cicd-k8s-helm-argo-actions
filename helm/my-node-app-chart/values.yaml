@@ -6,7 +6,7 @@ fullnameOverride: ""
 
 image:
   repository: ghcr.io/githubadministrator01/my-node-app   # change this to your registry/repo
-  tag: ee1099c0f081cdf0cf15118a28918427de081387
+  tag: 3b2c0f9a3c0d27f110de9fba55dd229b640b85c4
   pullPolicy: IfNotPresent
 
 service:
