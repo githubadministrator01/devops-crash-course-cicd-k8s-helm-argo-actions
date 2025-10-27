@@ -12,7 +12,8 @@ on:
         type: choice
         options:
           - '["self-hosted", "wsl-2", "docker"]'
-          - 'ubuntu-latest'
+          - '["ubuntu-latest"]'
+        default: '["self-hosted", "wsl-2", "docker"]'
 
 jobs:
   build-test-scan:
