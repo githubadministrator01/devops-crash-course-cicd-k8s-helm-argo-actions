@@ -19,7 +19,6 @@ It is designed as a **learning project** for DevOps engineers and developers who
 │   └── work/                      # Working directory for runner jobs
 ├── app/                           # Sample Node.js application
 │   └── public/                    # Static assets (HTML, CSS, JS, images)
-├── cicd/                          # CI/CD pipeline definitions or scripts
 ├── helm/                          # Helm charts for application & infra
 │   ├── argocd/                    # Helm chart for Argo CD
 │   ├── ingress-nginx/             # Helm chart for NGINX ingress controller
