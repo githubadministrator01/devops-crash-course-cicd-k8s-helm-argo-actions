@@ -5,6 +5,14 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      runs_on:
+        description: "GitHub runner label or JSON array of labels to run the job on (e.g. 'ubuntu-latest' or '[\"self-hosted\",\"linux\"]')"
+        required: false
+        type: choice
+        options:
+          - '["self-hosted", "wsl-2", "docker"]'
+          - 'ubuntu-latest'
 
 jobs:
   build-test-scan:
@@ -18,6 +26,6 @@ jobs:
     with:
       image_tag: ${{ github.sha }}
       chart_dir: "./helm/my-node-app-chart"  # path to Helm chart in the repo
-      runs_on: '["self-hosted", "wsl-2", "docker"]'
+      runs_on: ${{ inputs.runs_on }}
     secrets:
       package_token: ${{ secrets.PACKAGE_TOKEN }}
