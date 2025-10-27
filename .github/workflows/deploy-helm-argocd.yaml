@@ -28,19 +28,13 @@ jobs:
         with:
           token: ${{ secrets.PACKAGE_TOKEN }}
 
-      - name: Install Helm (if not present)
-        run: |
-          if ! command -v helm &> /dev/null; then
-            echo "Helm not found, installing..."
-            curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-            helm version
-          else
-            echo "Helm already installed: $(helm version)"
-          fi
+      - name: Install Helm
+        uses: azure/setup-helm@v4
 
       - name: Helm lint
         run: |
           CHART_DIR=${{ inputs.chart_dir }}
+          helm lint $CHART_DIR
           helm template my-node-app $CHART_DIR -f $CHART_DIR/values.yaml
 
       - name: Update Helm chart values with new image tag
