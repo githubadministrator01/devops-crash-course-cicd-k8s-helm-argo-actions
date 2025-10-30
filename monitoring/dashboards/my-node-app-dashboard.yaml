@@ -27,7 +27,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 40,
+      "id": 230,
       "links": [],
       "panels": [
         {
@@ -42,6 +42,31 @@ data:
           "panels": [],
           "title": "General",
           "type": "row"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 10,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "![ArgoCD Status](https://argocd.example.com/api/badge?name=my-node-app&revision=true&showAppName=true)",
+            "mode": "markdown"
+          },
+          "pluginVersion": "12.1.1",
+          "title": "ArgoCD application badge status",
+          "type": "text"
         },
         {
           "datasource": {
@@ -108,7 +133,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 1
+            "y": 4
           },
           "id": 5,
           "options": {
@@ -203,7 +228,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 1
+            "y": 4
           },
           "id": 9,
           "options": {
@@ -238,7 +263,7 @@ data:
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 9
+            "y": 12
           },
           "id": 7,
           "panels": [],
@@ -313,7 +338,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 10
+            "y": 13
           },
           "id": 3,
           "options": {
@@ -408,7 +433,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 10
+            "y": 13
           },
           "id": 4,
           "options": {
@@ -443,7 +468,7 @@ data:
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 18
+            "y": 21
           },
           "id": 6,
           "panels": [],
@@ -540,7 +565,7 @@ data:
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 19
+            "y": 22
           },
           "id": 1,
           "options": {
@@ -616,8 +641,8 @@ data:
           },
           {
             "current": {
-              "text": "my-app-nodejs-799c5f8765-5xx6j",
-              "value": "my-app-nodejs-799c5f8765-5xx6j"
+              "text": "my-app-nodejs-54fc54f8bb-q5hm6",
+              "value": "my-app-nodejs-54fc54f8bb-q5hm6"
             },
             "definition": "label_values({namespace=\"$namespace\"},pod)",
             "description": "k8s pod",
@@ -637,12 +662,12 @@ data:
         ]
       },
       "time": {
-        "from": "now-1h",
+        "from": "now-5m",
         "to": "now"
       },
       "timepicker": {},
       "timezone": "browser",
       "title": "My-Node-App-Dashboard",
-      "uid": "c6e065e8-90c3-4d6a-b014-fb6a2355e0a1",
+      "uid": "1c0d5dd8-6ff8-4d72-9d09-a54acb0ea9e8",
       "version": 2
     }
