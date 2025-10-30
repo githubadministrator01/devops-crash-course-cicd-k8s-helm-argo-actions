@@ -14,4 +14,7 @@ services:
       ORG_RUNNER: "false" # set to true if you want org-level runner
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./:/home/runner/_work  # persist job data
+      - runner-data:/home/runner/_work  # persist job data
+
+volumes:
+  runner-data:
