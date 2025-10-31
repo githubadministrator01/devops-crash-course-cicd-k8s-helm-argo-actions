@@ -19,7 +19,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-server
+      app.kubernetes.io/name: argocd-server-metrics
   endpoints:
     - port: metrics
 
@@ -32,7 +32,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-repo-server
+      app.kubernetes.io/name: argocd-repo-server-metrics
   endpoints:
     - port: metrics
 
@@ -66,24 +66,11 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: argocd-redis-haproxy-metrics
-  namespace: argocd
-spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: argocd-redis
-  endpoints:
-    - port: http-exporter-port
-
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
   name: argocd-notifications-controller
   namespace: argocd
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-notifications-controller-metrics
+      app.kubernetes.io/name: argocd-metrics
   endpoints:
-    - port: metrics
+    - port: http-metrics
