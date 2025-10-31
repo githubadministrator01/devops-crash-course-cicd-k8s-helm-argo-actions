@@ -3751,7 +3751,10 @@ prometheus:
 
     ingressClassName: "nginx"
 
-    annotations: {}
+    annotations:
+      nginx.ingress.kubernetes.io/auth-type: basic
+      nginx.ingress.kubernetes.io/auth-secret: basic-auth-secret
+      nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - Prometheus'
     labels: {}
 
     ## Redirect ingress to an additional defined port on the service
