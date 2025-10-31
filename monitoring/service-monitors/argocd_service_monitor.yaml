@@ -60,7 +60,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: argocd-dex-server
   endpoints:
-    - port: metrics
+    - port: http-metrics
 
 ---
 apiVersion: monitoring.coreos.com/v1

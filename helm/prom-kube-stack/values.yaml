@@ -3739,11 +3739,11 @@ prometheus:
   ## (use it for example to store hashed basic auth credentials)
   extraSecret:
     ## if not set, name will be auto generated
-    # name: ""
+    name: "basic-auth-secret"
     annotations: {}
-    data: {}
-  #   auth: |
-  #     foo:$apr1$OFG3Xybp$ckL0FHDAkoXYIlH9.cysT0
+    data:
+      auth: |
+        admin:$apr1$VTq5pRJh$d8PrqOiwBp11gWVkHGjyY/
   #     someoneelse:$apr1$DMZX2Z4q$6SbQIfyuLQd.xmo/P0m2c.
 
   ingress:
