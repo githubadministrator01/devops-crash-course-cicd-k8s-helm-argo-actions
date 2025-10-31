@@ -19,7 +19,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-server-metrics
+      app.kubernetes.io/name: argocd-server
   endpoints:
     - port: metrics
 
@@ -71,7 +71,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-redis-ha-haproxy
+      app.kubernetes.io/name: argocd-redis
   endpoints:
     - port: http-exporter-port
 
