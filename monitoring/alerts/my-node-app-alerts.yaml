@@ -62,13 +62,13 @@ data:
                     maxDataPoints: 43200
                     refId: C
                     type: threshold
-              dashboardUid: c6e065e8-90c3-4d6a-b014-fb6a2355e0a1
+              dashboardUid: 1c0d5dd8-6ff8-4d72-9d09-a54acb0ea9e8
               panelId: 3
               noDataState: NoData
               execErrState: Error
               for: 1m
               annotations:
-                __dashboardUid__: c6e065e8-90c3-4d6a-b014-fb6a2355e0a1
+                __dashboardUid__: 1c0d5dd8-6ff8-4d72-9d09-a54acb0ea9e8
                 __panelId__: "3"
                 description: 'Pod {{ $labels.pod }} is using {{ $value }} MB of memory (threshold: 30 MB)'
                 summary: High memory usage on {{ $labels.pod }}
