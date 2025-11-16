@@ -2,6 +2,16 @@ name: Build and Deploy Node.js app to Kubernetes
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - both
+          - wsl2
+          - mac-apple
+        default: both
 
 jobs:
   build:
@@ -26,6 +36,10 @@ jobs:
         run: npm test
         working-directory: ./app
 
+      # Setup Docker Buildx for multi-platform builds
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       # Login to GitHub Container Registry
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -34,16 +48,30 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.PACKAGE_TOKEN }}
 
-      # Build and push Docker image
-      - name: Build and push the Docker image
-        uses: docker/build-push-action@v3
+      # # Build and push Docker image
+      # - name: Build and push the Docker image
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: ./app                # Path to your app folder
+      #     file: ./app/Dockerfile         # Path to your Dockerfile
+      #     push: true
+      #     tags: |
+      #       ghcr.io/${{ github.repository_owner }}/my-node-app:${{ github.sha }}
+      #       ghcr.io/${{ github.repository_owner }}/my-node-app:latest
+
+      # Build and push multi-architecture Docker image
+      - name: Build and push multi-arch Docker image
+        uses: docker/build-push-action@v5
         with:
-          context: ./app                # Path to your app folder
-          file: ./app/Dockerfile         # Path to your Dockerfile
+          context: ./app
+          file: ./app/Dockerfile
+          platforms: linux/amd64,linux/arm64  # Build for both architectures
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/my-node-app:${{ github.sha }}
             ghcr.io/${{ github.repository_owner }}/my-node-app:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       # Trivy scan
       - name: Scan Docker image with Trivy
@@ -55,9 +83,11 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
 
-  deploy:
+  # Deploy to WSL2
+  deploy-wsl2:
     runs-on: [self-hosted, wsl-2, docker]
     needs: build
+    if: inputs.environment == 'both' || inputs.environment == 'wsl2'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -65,13 +95,13 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v4
 
-      - name: Configure Kubeconfig
+      - name: Configure Kubeconfig for WSL2
         uses: azure/k8s-set-context@v4
         with:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBECONFIG }}
 
-      - name: Deploy the Helm chart
+      - name: Deploy to WSL2 cluster
         run: |
           helm upgrade \
             my-node-app \
@@ -80,4 +110,35 @@ jobs:
             --create-namespace \
             --namespace apps \
             --set image.repository=ghcr.io/${{ github.repository_owner }}/my-node-app \
-            --set image.tag=${{ github.sha }}
+            --set image.tag=${{ github.sha }} \
+            --wait
+
+  # Deploy to Mac Apple Silicon
+  deploy-mac:
+    runs-on: [self-hosted, mac-apple]
+    needs: build
+    if: inputs.environment == 'both' || inputs.environment == 'mac-apple'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Configure Kubeconfig for Mac
+        uses: azure/k8s-set-context@v4
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG_APPLE }}
+
+      - name: Deploy to Mac cluster
+        run: |
+          helm upgrade \
+            my-node-app \
+            helm/my-node-app-chart \
+            --install \
+            --create-namespace \
+            --namespace apps \
+            --set image.repository=ghcr.io/${{ github.repository_owner }}/my-node-app \
+            --set image.tag=${{ github.sha }} \
+            --wait
