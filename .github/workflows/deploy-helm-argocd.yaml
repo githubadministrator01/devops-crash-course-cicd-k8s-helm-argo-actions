@@ -12,7 +12,7 @@ on:
         required: true
         type: string
       runs_on:
-        description: "GitHub runner label or JSON array of labels to run the job on (e.g. 'ubuntu-latest' or '[\"self-hosted\",\"wsl-2\",\"docker\"]')"
+        description: "GitHub runner label or JSON array of labels to run the job on (e.g. 'ubuntu-latest', '[\"self-hosted\",\"wsl-2\",\"docker\"]') or '[\"self-hosted\",\"mac-apple\",\"docker\"]')"
         required: false
         type: string
     secrets:
