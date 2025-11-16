@@ -12,6 +12,7 @@ on:
         type: choice
         options:
           - '["self-hosted", "wsl-2", "docker"]'
+          - '["self-hosted", "mac-apple", "docker"]'
           - '["ubuntu-latest"]'
         default: '["self-hosted", "wsl-2", "docker"]'
 
@@ -27,6 +28,6 @@ jobs:
     with:
       image_tag: ${{ github.sha }}
       chart_dir: "./helm/my-node-app-chart"  # path to Helm chart in the repo
-      runs_on: ${{ inputs.runs_on || '["self-hosted", "wsl-2", "docker"]' || '["self-hosted", "mac-apple", "docker"]'}}
+      runs_on: ${{ inputs.runs_on || '["self-hosted", "wsl-2", "docker"]' }}
     secrets:
       package_token: ${{ secrets.PACKAGE_TOKEN }}
