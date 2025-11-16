@@ -2,16 +2,6 @@ name: Build and Deploy Node.js app to Kubernetes
 
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Target environment'
-        required: true
-        type: choice
-        options:
-          - both
-          - wsl2
-          - mac-apple
-        default: both
 
 jobs:
   build:
@@ -75,7 +65,6 @@ jobs:
           TRIVY_USERNAME: ${{ github.actor }}
           TRIVY_PASSWORD: ${{ secrets.PACKAGE_TOKEN }}
 
-  # Deploy to WSL2
   deploy-wsl2:
     runs-on: [self-hosted, wsl-2, docker]
     needs: build
@@ -94,36 +83,6 @@ jobs:
           kubeconfig: ${{ secrets.KUBECONFIG }}
 
       - name: Deploy to WSL2 cluster
-        run: |
-          helm upgrade \
-            my-node-app \
-            helm/my-node-app-chart \
-            --install \
-            --create-namespace \
-            --namespace apps \
-            --set image.repository=ghcr.io/${{ github.repository_owner }}/my-node-app \
-            --set image.tag=${{ github.sha }} \
-            --wait
-
-  # Deploy to Mac Apple Silicon
-  deploy-mac:
-    runs-on: [self-hosted, mac-apple]
-    needs: build
-    if: inputs.environment == 'both' || inputs.environment == 'mac-apple'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Helm
-        uses: azure/setup-helm@v4
-
-      - name: Configure Kubeconfig for Mac
-        uses: azure/k8s-set-context@v4
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG_APPLE }}
-
-      - name: Deploy to Mac cluster
         run: |
           helm upgrade \
             my-node-app \

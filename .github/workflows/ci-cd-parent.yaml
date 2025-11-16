@@ -7,12 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       runs_on:
-        description: "GitHub runner label or JSON array of labels to run the job on (e.g. 'ubuntu-latest', '[\"self-hosted\",\"wsl-2\",\"docker\"]' or '[\"self-hosted\",\"mac-apple\",\"docker\"]')"
+        description: "GitHub runner label or JSON array of labels to run the job on (e.g. 'ubuntu-latest', '[\"self-hosted\",\"wsl-2\",\"docker\"]')"
         required: false
         type: choice
         options:
           - '["self-hosted", "wsl-2", "docker"]'
-          - '["self-hosted", "mac-apple", "docker"]'
           - '["ubuntu-latest"]'
         default: '["self-hosted", "wsl-2", "docker"]'
 
