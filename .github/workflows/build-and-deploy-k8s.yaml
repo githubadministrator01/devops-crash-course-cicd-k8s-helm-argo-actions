@@ -117,11 +117,11 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v4
 
-      # - name: Configure Kubeconfig for Mac
-      #   uses: azure/k8s-set-context@v4
-      #   with:
-      #     method: kubeconfig
-      #     kubeconfig: ${{ secrets.KUBECONFIG_APPLE }}
+      - name: Configure Kubeconfig for Mac
+        uses: azure/k8s-set-context@v4
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG_APPLE }}
 
       - name: Deploy to Mac cluster
         run: |
