@@ -82,6 +82,9 @@ jobs:
           exit-code: 0   # non-zero exit code fails the job if vulnerabilities are found
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+        env:
+          TRIVY_USERNAME: ${{ github.actor }}
+          TRIVY_PASSWORD: ${{ secrets.PACKAGE_TOKEN }}
 
   # Deploy to WSL2
   deploy-wsl2:
