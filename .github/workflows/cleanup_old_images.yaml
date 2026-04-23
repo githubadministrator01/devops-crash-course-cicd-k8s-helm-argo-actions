@@ -1,8 +1,8 @@
 name: Cleanup Old Docker Images
 
 on:
-  schedule:
-    - cron: '0 2 * * 0'  # Weekly on Sunday at 2 AM
+  # schedule:
+  #   - cron: '0 2 * * 0'  # Weekly on Sunday at 2 AM
   workflow_dispatch:  # Manual trigger
 
 jobs:
