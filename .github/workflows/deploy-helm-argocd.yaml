@@ -56,3 +56,47 @@ jobs:
           git add $CHART_DIR/values.yaml
           git commit -m "Deploy image tag ${IMAGE_TAG} [skip ci]"
           git push
+
+      - name: Trigger Argo CD sync
+        run: |
+          # Install Argo CD CLI
+          echo "Ensuring Argo CD CLI is installed"
+          if command -v argocd >/dev/null 2>&1; then
+            echo "argocd is already installed at $(command -v argocd)"
+          else
+            echo "argocd not found, installing..."
+            OS=$(uname -s)
+            ARCH=$(uname -m)
+            case "${OS}-${ARCH}" in
+              Linux-x86_64|Linux-amd64)
+                URL="https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64" ;;
+              Linux-arm64|Linux-aarch64)
+                URL="https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-arm64" ;;
+              Darwin-x86_64|Darwin-amd64)
+                URL="https://github.com/argoproj/argo-cd/releases/latest/download/argocd-darwin-amd64" ;;
+              Darwin-arm64|Darwin-aarch64)
+                URL="https://github.com/argoproj/argo-cd/releases/latest/download/argocd-darwin-arm64" ;;
+              *)
+                echo "Unsupported platform: ${OS}-${ARCH}" >&2
+                exit 1
+                ;;
+            esac
+            tmpfile=$(mktemp)
+            curl -sSL "$URL" -o "$tmpfile"
+            chmod +x "$tmpfile"
+            sudo mv "$tmpfile" /usr/local/bin/argocd
+          fi
+
+          # Triiger sync and wait for the app to be healthy
+          echo "Triggering Argo CD sync for my-node-app"
+          argocd app sync my-node-app --prune --timeout 300
+          echo "Sync triggered, waiting for the app to be healthy"
+
+          # Wait for the app to be healthy
+          echo "Waiting for my-node-app to be healthy"
+          argocd app wait my-node-app --timeout 300
+          echo "my-node-app is healthy and synced"
+
+          # Check the status of the app
+          echo "Checking the status of my-node-app"
+          argocd app get my-node-app
