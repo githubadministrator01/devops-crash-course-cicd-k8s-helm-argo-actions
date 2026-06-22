@@ -59,7 +59,7 @@ jobs:
 
       - name: Trigger Argo CD sync
         env:
-          ARGOCD_SERVER: "argocd.example.com"
+          ARGOCD_SERVER: host.docker.internal
         run: |
           set -euo pipefail
 
