@@ -58,8 +58,6 @@ jobs:
           git push
 
       - name: Trigger Argo CD sync
-        env:
-          ARGOCD_SERVER: "argocd.example.com"
         run: |
           set -euo pipefail
 
@@ -93,7 +91,7 @@ jobs:
 
           # Log in to Argo CD
           echo "Logging in to Argo CD"
-          argocd login "$ARGOCD_SERVER" --username admin --password "${{ secrets.ARGOCD_PASSWORD }}" --insecure --grpc-web
+          argocd login argocd.example.com --username admin --password "${{ secrets.ARGOCD_PASSWORD }}" --insecure --grpc-web
 
           # Trigger sync and wait for the app to be healthy
           echo "Triggering Argo CD sync for my-node-app"
