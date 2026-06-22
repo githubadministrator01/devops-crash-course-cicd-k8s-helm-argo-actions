@@ -18,6 +18,8 @@ on:
     secrets:
       package_token:
         required: true
+      ARGOCD_PASSWORD:
+        required: true
 
 jobs:
   deploy:

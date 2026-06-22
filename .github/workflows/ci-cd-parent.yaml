@@ -30,3 +30,4 @@ jobs:
       runs_on: ${{ inputs.runs_on || '["self-hosted", "wsl-2", "docker"]' }}
     secrets:
       package_token: ${{ secrets.PACKAGE_TOKEN }}
+      ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
