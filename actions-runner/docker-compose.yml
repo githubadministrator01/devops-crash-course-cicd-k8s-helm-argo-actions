@@ -5,6 +5,8 @@ services:
     image: myoung34/github-runner:latest
     container_name: github-runner
     restart: unless-stopped
+    extra_hosts:
+      - "argocd.example.com:host-gateway"
     environment:
       REPO_URL: "https://github.com/githubadministrator01/devops-crash-course-cicd-k8s-helm-argo-actions" # Or https://github.com/<ORG> if org runner
       RUNNER_NAME: "wsl-2-runner"
