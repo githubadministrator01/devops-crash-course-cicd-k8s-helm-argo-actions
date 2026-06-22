@@ -58,7 +58,11 @@ jobs:
           git push
 
       - name: Trigger Argo CD sync
+        env:
+          ARGOCD_SERVER: "argocd.example.com"
         run: |
+          set -euo pipefail
+
           # Install Argo CD CLI
           echo "Ensuring Argo CD CLI is installed"
           if command -v argocd >/dev/null 2>&1; then
@@ -82,12 +86,16 @@ jobs:
                 ;;
             esac
             tmpfile=$(mktemp)
-            curl -sSL "$URL" -o "$tmpfile"
-            chmod +x "$tmpfile"
-            sudo mv "$tmpfile" /usr/local/bin/argocd
+            curl -fsSL "$URL" -o "$tmpfile"
+            sudo install -m 755 "$tmpfile" /usr/local/bin/argocd
+            argocd version --client
           fi
 
-          # Triiger sync and wait for the app to be healthy
+          # Log in to Argo CD
+          echo "Logging in to Argo CD"
+          argocd login "$ARGOCD_SERVER" --username admin --password "${{ secrets.ARGOCD_PASSWORD }}" --insecure --grpc-web
+
+          # Trigger sync and wait for the app to be healthy
           echo "Triggering Argo CD sync for my-node-app"
           argocd app sync my-node-app --prune --timeout 300
           echo "Sync triggered, waiting for the app to be healthy"
