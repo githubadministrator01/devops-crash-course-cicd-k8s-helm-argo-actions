@@ -110,3 +110,29 @@ jobs:
           # Check the status of the app
           echo "Checking the status of my-node-app"
           argocd app get my-node-app
+      
+      - name: Verify deployment and pod readiness
+        run: |
+          set -euo pipefail
+
+          echo "Ensuring kubectl is installed"
+          - uses: azure/setup-kubectl@v4
+            with:
+              version: 1.34.1 
+            id: install
+
+          # Configure kubeconfig
+          - name: Configure Kubeconfig
+            uses: azure/k8s-set-context@v4
+            with:
+              method: kubeconfig
+              kubeconfig: ${{ secrets.KUBECONFIG }}
+
+          echo "Verifying deployment and pod readiness in the 'apps' namespace"
+          kubectl rollout status deployment my-app-nodejs -n apps --timeout=300s
+          echo "<-------Deployment is successful, checking pod readiness--------> "
+
+          echo "Waiting for pods in the 'apps' namespace to be ready"
+          kubectl wait --namespace apps --for=condition=ready pod -l app.kubernetes.io/name=nodejs --timeout=300s
+          echo "<-------All pods are ready"-------->
+          
