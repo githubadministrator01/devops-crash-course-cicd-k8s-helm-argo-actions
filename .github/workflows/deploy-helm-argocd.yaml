@@ -116,11 +116,12 @@ jobs:
           set -euo pipefail
 
           echo "Ensuring kubectl is installed"
-          - uses: azure/setup-kubectl@v4
+          - name: Install kubectl
+            uses: azure/setup-kubectl@v4
             with:
-              version: 1.34.1 
+              version: v1.34.1 
             id: install
-
+          
           # Configure kubeconfig
           - name: Configure Kubeconfig
             uses: azure/k8s-set-context@v4
