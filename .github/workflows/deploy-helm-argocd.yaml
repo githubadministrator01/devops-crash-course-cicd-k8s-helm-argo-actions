@@ -68,11 +68,11 @@ jobs:
           set -euo pipefail
 
           # Install Argo CD CLI
-          echo "Ensuring Argo CD CLI is installed"
+          echo "|------Ensuring Argo CD CLI is installed------------------|"
           if command -v argocd >/dev/null 2>&1; then
-            echo "argocd is already installed at $(command -v argocd)"
+            echo "|------argocd is already installed at $(command -v argocd)------------------|"
           else
-            echo "argocd not found, installing..."
+            echo "|------argocd not found, installing...------------------|"
             OS=$(uname -s)
             ARCH=$(uname -m)
             case "${OS}-${ARCH}" in
@@ -96,26 +96,21 @@ jobs:
           fi
 
           # Log in to Argo CD
-          echo "Logging in to Argo CD"
+          echo "|------Logging in to Argo CD------------------|"
           argocd login "$ARGOCD_SERVER" --username admin --password "${{ secrets.ARGOCD_PASSWORD }}" --insecure --grpc-web
 
           # Trigger sync and wait for the app to be healthy
-          echo ""
-          echo "Triggering Argo CD sync for my-node-app"
+          echo "|------Triggering Argo CD sync for my-node-app------------------|"
           argocd app sync my-node-app --prune --timeout 300
-          echo ""
-          echo "Sync triggered, waiting for the app to be healthy"
-          echo ""
+          echo "|------Sync triggered, waiting for the app to be healthy------------------|"
 
           # Wait for the app to be healthy
-          echo "Waiting for my-node-app to be healthy"
+          echo "|------Waiting for my-node-app to be healthy------------------|"
           argocd app wait my-node-app --health --sync --timeout 300
-          echo ""
-          echo "my-node-app is healthy and synced"
-          echo ""
+          echo "|------my-node-app is healthy and synced------------------|"
 
           # Check the status of the app
-          echo "Checking the status of my-node-app"
+          echo "|------Checking the status of my-node-app------------------|"
           argocd app get my-node-app
       
       - name: Install kubectl
@@ -133,13 +128,13 @@ jobs:
         run: |
           set -euo pipefail
 
-          echo "Verifying deployment and pod readiness in the 'apps' namespace"
+          echo "|------Verifying deployment and pod readiness in the 'apps' namespace------------------|"
 
           kubectl rollout status deployment my-app-nodejs \
             -n apps \
             --timeout=300s
 
-          echo "<-------Deployment is successful, checking pod readiness-------->"
+          echo "|------Deployment is successful, checking pod readiness------------------|"
 
           kubectl wait \
             --namespace apps \
@@ -148,5 +143,4 @@ jobs:
             -l app.kubernetes.io/name=nodejs \
             --timeout=300s
 
-          echo "<-------All pods are ready-------->"
-          
+          echo "|------All pods are ready------------------|"
