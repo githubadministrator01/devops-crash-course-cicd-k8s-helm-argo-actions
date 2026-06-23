@@ -106,7 +106,7 @@ jobs:
 
           # Wait for the app to be healthy
           echo "Waiting for my-node-app to be healthy"
-          argocd app wait my-node-app --timeout 300
+          argocd app wait my-node-app --health --sync --timeout 300
           echo "my-node-app is healthy and synced"
 
           # Check the status of the app
