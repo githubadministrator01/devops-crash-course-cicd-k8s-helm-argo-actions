@@ -103,12 +103,15 @@ jobs:
           echo "Triggering Argo CD sync for my-node-app"
           argocd app sync my-node-app --prune --timeout 300
           echo "Sync triggered, waiting for the app to be healthy"
+          echo ""
 
           # Wait for the app to be healthy
           echo "Waiting for my-node-app to be healthy"
           argocd app wait my-node-app --health --sync --timeout 300
+          echo ""
           echo "my-node-app is healthy and synced"
-
+          echo ""
+          
           # Check the status of the app
           echo "Checking the status of my-node-app"
           argocd app get my-node-app
