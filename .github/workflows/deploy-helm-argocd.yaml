@@ -100,8 +100,10 @@ jobs:
           argocd login "$ARGOCD_SERVER" --username admin --password "${{ secrets.ARGOCD_PASSWORD }}" --insecure --grpc-web
 
           # Trigger sync and wait for the app to be healthy
+          echo ""
           echo "Triggering Argo CD sync for my-node-app"
           argocd app sync my-node-app --prune --timeout 300
+          echo ""
           echo "Sync triggered, waiting for the app to be healthy"
           echo ""
 
@@ -111,7 +113,7 @@ jobs:
           echo ""
           echo "my-node-app is healthy and synced"
           echo ""
-          
+
           # Check the status of the app
           echo "Checking the status of my-node-app"
           argocd app get my-node-app
